@@ -1,35 +1,57 @@
+import { createSelector } from 'reselect';
+
 /** Action Type Constants: */
-export const LOAD_REPORTS = 'reports/LOAD_REPORTS';
-export const RECEIVE_REPORT = 'reports/RECEIVE_REPORT';
-export const UPDATE_REPORT = 'reports/UPDATE_REPORT';
-export const REMOVE_REPORT = 'reports/REMOVE_REPORT';
+export const LOAD_REPORTS = "reports/LOAD_REPORTS";
+export const RECEIVE_REPORT = "reports/RECEIVE_REPORT";
+export const UPDATE_REPORT = "reports/UPDATE_REPORT";
+export const REMOVE_REPORT = "reports/REMOVE_REPORT";
 
 /**  Action Creators: */
 export const loadReports = (reports) => ({
   type: LOAD_REPORTS,
-  reports
+  reports,
 });
 
 export const receiveReport = (report) => ({
   type: RECEIVE_REPORT,
-  report
+  report,
 });
 
 export const editReport = (report) => ({
   type: UPDATE_REPORT,
-  report
+  report,
 });
 
 export const removeReport = (reportId) => ({
   type: REMOVE_REPORT,
-  reportId
+  reportId,
 });
 
 /** Thunk Action Creators: */
 
-// Your code here 
+// Your code here
+export const loadReportsThunk = () => async (dispatch) => {
+  const res = await fetch("/reports", {
+    method: "GET",
+    },
+  );
+  const data = await res.json();
+  console.log(data);
+
+  if (res.ok) {
+    dispatch(loadReports(data));
+  } else {
+    return res;
+  }
+};
 
 /** Selectors: */
+const reportSelector = (state) => state.reports;
+
+export const selectReports = createSelector(
+  reportSelector,
+  (reports) => Object.values(reports)
+);
 
 /** Reducer: */
 

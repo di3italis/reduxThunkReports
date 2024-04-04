@@ -31,10 +31,8 @@ export const removeReport = (reportId) => ({
 
 // Your code here
 export const loadReportsThunk = () => async (dispatch) => {
-  const res = await fetch("/reports", {
-    method: "GET",
-    },
-  );
+  const res = await fetch("/api/reports");
+  console.log(res)
   const data = await res.json();
   console.log(data);
 

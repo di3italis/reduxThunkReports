@@ -8,8 +8,7 @@ import { loadReportsThunk } from "../store/reports";
 
 const ReportsIndex = () => {
   const reports = useSelector(selectReports); // populate from Redux store
-  console.log(reports);
-
+  
   const dispatch = useDispatch();
 
   useEffect(() => {

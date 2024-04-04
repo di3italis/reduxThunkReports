@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 // import { useEffect } from 'react';
 import { createReportThunk } from '../store/reports';
+import { updateReportThunk } from '../store/reports';
 
 const ReportForm = ({ report, formType }) => {
   const navigate = useNavigate();
@@ -15,13 +16,26 @@ const ReportForm = ({ report, formType }) => {
     e.preventDefault();
     report = { ...report, understanding, improvement };
 
-    try {
-      const success = await dispatch(createReportThunk(report));
-      navigate(`/reports/${success.id}`)
+    if(formType === 'Create Report'){
+      try {
+        const success = await dispatch(createReportThunk(report));
+        navigate(`/reports/${success.id}`)
+      }
+  
+      catch(e){
+        setErrors(e.errors)
+      }
     }
 
-    catch(e){
-      setErrors(e.errors)
+    if(formType === 'Update Report'){
+      try {
+        const success = await dispatch(updateReportThunk(report));
+        navigate(`/reports/${success.id}`)
+      }
+  
+      catch(e){
+        setErrors(e.errors)
+      }
     }
   };
 

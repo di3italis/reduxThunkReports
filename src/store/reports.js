@@ -83,6 +83,29 @@ export const createReportThunk = (report) => async dispatch => {
     error.errors = errors;
     throw error;
   }
+};
+
+export const updateReportThunk = (report) => async dispatch => {
+  const res = await fetch(`/api/reports/${report.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(report)
+  });
+
+  if(res.ok){
+    const data = await res.json();
+    dispatch(editReport(data));
+    return data;
+  }
+
+  else {
+    const error = new Error('Failed');
+    const {errors} = await res.json();
+    error.errors = errors;
+    throw error;
+  }
 }
 
 /** Selectors: */

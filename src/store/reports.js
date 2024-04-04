@@ -58,10 +58,31 @@ export const loadReportById = (id) => async dispatch => {
 
   if(res.ok){
     const data = await res.json();
-    console.log(data);
     dispatch(receiveReport(data))
   }
   else return res;
+};
+
+export const createReportThunk = (report) => async dispatch => {
+  const res = await fetch('/api/reports', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(report)
+  })
+
+  if(res.ok){
+    const data = await res.json();
+    dispatch(receiveReport(data))
+    return data; 
+  }
+  else {
+    const error = new Error("Failed");
+    const {errors} = await res.json();
+    error.errors = errors;
+    throw error;
+  }
 }
 
 /** Selectors: */

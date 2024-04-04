@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+// import { useEffect } from 'react';
+import { createReportThunk } from '../store/reports';
 
 const ReportForm = ({ report, formType }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [understanding, setUnderstanding] = useState(report?.understanding);
   const [improvement, setImprovement] = useState(report?.improvement);
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
     report = { ...report, understanding, improvement };
+
+    try {
+      const success = await dispatch(createReportThunk(report));
+      navigate(`/reports/${success.id}`)
+    }
+
+    catch(e){
+      setErrors(e.errors)
+    }
   };
 
   /* **DO NOT CHANGE THE RETURN VALUE** */

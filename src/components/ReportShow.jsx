@@ -1,16 +1,24 @@
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadReportById } from "../store/reports";
+import { selectReportById } from "../store/reports";
 
 const ReportShow = () => {
   const { reportId } = useParams();
   const navigate = useNavigate();
   const [goToReport, setGoToReport] = useState(reportId);
-  const report = {}; // populate from Redux store
+  const report = useSelector(selectReportById(reportId)); // populate from Redux store
+  const dispatch = useDispatch();
 
-  const handleSubmit = e => {
+  useEffect(() => {
+    dispatch(loadReportById(reportId));
+  }, [dispatch, reportId]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     navigate(`/reports/${goToReport}`);
-  }
+  };
 
   /* **DO NOT CHANGE THE RETURN VALUE** */
   return (
@@ -33,10 +41,7 @@ const ReportShow = () => {
         </tbody>
       </table>
       <div className="footer">
-        <Link
-          className="back-button"
-          to="/"
-        >
+        <Link className="back-button" to="/">
           Back to Report Index
         </Link>
         <form className="go-to-report-form" onSubmit={handleSubmit}>

@@ -51,6 +51,17 @@ export const deleteReportThunk = (id) => async dispatch => {
   }
 
   else return res;
+};
+
+export const loadReportById = (id) => async dispatch => {
+  const res = await fetch(`/api/reports/${id}`);
+
+  if(res.ok){
+    const data = await res.json();
+    console.log(data);
+    dispatch(receiveReport(data))
+  }
+  else return res;
 }
 
 /** Selectors: */
@@ -61,6 +72,8 @@ export const selectReports = createSelector(
   (reports) => Object.values(reports)
 );
 
+const reportByIdSelector = (id) => state => state.reports[id];
+export const selectReportById = createSelector(reportByIdSelector, (report) => report)
 
 /** Reducer: */
 
